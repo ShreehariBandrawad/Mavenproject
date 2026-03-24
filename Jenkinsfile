@@ -27,7 +27,7 @@ pipeline{
 	  
 	   stage('Copy .war to s3 bucket'){
                 steps{
-                        sh "aws s3 cp target/LoginWebapp.war s3://vel-bukt-345-123"
+                        sh "aws s3 cp /mnt/Mavenproject/target/LoginWebapp.war s3://vel-bukt-345-123"
                      }
            }
 		
