@@ -9,13 +9,13 @@ pipeline{
 	    
 	    stage('mvn clean install'){
                 steps{
-                        sh "clean install"
+                        sh "mvn clean install"
                      }
             }
 	
 	    stage('remove .war file from tomcat deployment folder'){
 		steps{
-			sh "rm -rf /mnt/server/apache-tomcat-10.1.52/webapps/Loginwebapp*"
+			sh "rm -rf /mnt/server/apache-tomcat-10.1.52/webapps/LoginWebapp*"
 	             }
 	    }
 
@@ -27,13 +27,13 @@ pipeline{
 	  
 	   stage('Copy .war to s3 bucket'){
                 steps{
-                        sh "aws s3 cp target/Loginwebapp.war s3://vel-bukt-345-123"
+                        sh "aws s3 cp target/LoginWebapp.war s3://vel-bukt-345-123"
                      }
            }
 		
 	   stage('Deploy war file into tomcat server'){
                 steps{
-                        sh "aws s3://vel-bukt-345-123/Loginwebapp.war /mnt/server/apache-tomcat-10.1.52/webapps/ "
+                        sh "aws s3 cp s3://vel-bukt-345-123/LoginWebapp.war /mnt/server/apache-tomcat-10.1.52/webapps/ "
                      }
            }
 	}
