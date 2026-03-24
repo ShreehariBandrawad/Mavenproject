@@ -33,7 +33,7 @@ pipeline{
 		
 	   stage('Deploy war file into tomcat server'){
                 steps{
-                        sh "aws s3://vel-bukt-345-123 /Loginwebapp.war/mnt/server/apache-tomcat-10.1.52/webapps "
+                        sh "aws s3://vel-bukt-345-123/Loginwebapp.war /mnt/server/apache-tomcat-10.1.52/webapps/ "
                      }
            }
 	}
