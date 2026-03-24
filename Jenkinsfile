@@ -1,5 +1,9 @@
 pipeline{
 	agent any
+	
+	tool{
+		maven 'Maven-3'
+    }
 	stages{
 	    stage('clear local repository of maven'){
 		steps{
