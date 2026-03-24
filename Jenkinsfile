@@ -1,47 +1,40 @@
-4qgrweadsvx
-pipeline {
-agent {
-label {
-		label "built-in-project"
-		customWorkspace "/data/project-myapp"
-		
-		}
-		}
-		
-	stages {
-		
-		stage ('CLEAN_OLD_M2') {
-			
-			steps {
-				sh "rm -rf /home/saccount/.m2/repository"
-				
-			}
-			
-		}
+pipeline{
+	agent any
+	stages{
+	    stage('clear local repository of maven'){
+		steps{
+			sh "rm -rf /root/.m2/repository"
+		     }
+	    }
+	    
+	    stage('Maven clean install'){
+                steps{
+                        sh "mvn clean install"
+                     }
+            }
 	
-		stage ('MAVEN_BUILD') {
-		
-			steps {
-						
-						sh "mvn clean package"
-			
-			}
-			
-		
-		}
-		
-		stage ('COPY_WAR_TO_Server'){
-		
-				steps {
-						
-						sh "scp -r target/LoginWebApp.war saccount@10.0.2.51:/data/project/wars"
+	    stage('remove .war file from tomcat deployment folder'){
+		steps{
+			sh "rm -rf /mnt/server/apache-tomcat-10.1.52/webapps/Loginwebapp*"
+	             }
+	    }
 
-						}
-				
-				}
-	
-	
-	
-	}
+	    stage('Create S3 bucket'){
+		steps{
+			sh "aws s3 mb s3://vel-bukt-345-123"
+		     }
+           }
+	  
+	   stage('Copy .war to s3 bucket'){
+                steps{
+                        sh "aws s3 cp target/Loginwebapp.war s3://vel-bukt-345-123"
+                     }
+           }
 		
+	   stage('Deploy war file into tomcat server'){
+                steps{
+                        sh "aws s3://vel-bukt-345-123 /Loginwebapp.war/mnt/server/apache-tomcat-10.1.52/webapps/ "
+                     }
+           }
+	}
 }
