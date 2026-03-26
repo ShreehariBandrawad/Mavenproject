@@ -21,19 +21,19 @@ pipeline{
 
             stage('Create S3 bucket'){
                 steps{
-                        sh "aws s3 mb s3://aaavelocity-bukt-345-123sss"
+                        sh "aws s3 mb s3://aaavelocity-bukt-345-123ssssss"
                      }
            }
 
            stage('Copy .war to s3 bucket'){
                 steps{
-                        sh "aws s3 cp /mnt/Mavenproject/target/LoginWebApp.war s3://aaavelocity-bukt-345-123sss "
+                        sh "aws s3 cp /mnt/Mavenproject/target/LoginWebApp.war s3://aaavelocity-bukt-345-123ssssss "
                      }
            }
 
             stage('Deploy war file into tomcat server'){
                 steps{
-                        sh "aws s3 cp s3://aaavelocity-bukt-345-123sss/LoginWebApp.war  /mnt/server/apache-tomcat-10.1.52/webapps/ "
+                        sh "aws s3 cp s3://aaavelocity-bukt-345-123ssssss/LoginWebApp.war  //mnt/server/apache-tomcat-10.1.53/webapps/ "
                      }
            }
         }
