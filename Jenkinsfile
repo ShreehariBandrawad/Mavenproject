@@ -27,13 +27,13 @@ pipeline{
 
            stage('Copy .war to s3 bucket'){
                 steps{
-                        sh "aws s3 cp /mnt/Mavenproject/target/LoginWebApp s3://vel-bukt-345-123"
+                        sh "aws s3 cp /mnt/Mavenproject/target/LoginWebApp.war s3://vel-bukt-345-123 "
                      }
            }
 
             stage('Deploy war file into tomcat server'){
                 steps{
-                        sh "aws s3://vel-bukt-345-123/LoginWebapp.war  /mnt/server/apache-tomcat-10.1.52/webapps/ "
+                        sh "aws s3://vel-bukt-345-123/LoginWebApp.war  /mnt/server/apache-tomcat-10.1.52/webapps/ "
                      }
            }
         }
