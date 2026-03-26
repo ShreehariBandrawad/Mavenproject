@@ -21,7 +21,7 @@ pipeline{
 
             stage('Create S3 bucket'){
                 steps{
-                        sh "aws s3 mb s3://vel-bukt-345-123"
+                        sh "aws s3 mb s3://velocity-bukt-345-123sss"
                      }
            }
 
