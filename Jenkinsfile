@@ -1,43 +1,42 @@
-pipeline{
-        agent any
-        stages{
-            stage('clear local repository of mvn'){
-                steps{
-                        sh "rm -rf /root/.m2/repository"
-                     }
+pipeline {
+    agent {
+        label 'built-in'
+    }
+    stages {
+
+        stage('checkout code') {
+            steps {
+                git 'https://github.com/ShreehariBandrawad/Mavenproject.git'
             }
-
-            stage('Maven clean install'){
-                steps{
-                        sh "mvn clean install"
-                     }
-            }
-
-            stage('remove .war file from tomcat deployment folder'){
-                steps{
-                        sh "rm -rf /mnt/server/apache-tomcat-10.1.52/webapps/LoginWebApp*"
-                     }
-            }
-
-            stage('Create S3 bucket'){
-                steps{
-                        sh "aws s3 mb s3://aaavelocity-bukt-345-123ssssss"
-                     }
-           }
-
-           stage('Copy .war to s3 bucket'){
-                steps{
-                        sh "aws s3 cp /mnt/Mavenproject/target/LoginWebApp.war s3://aaavelocity-bukt-345-123ssssss "
-                     }
-           }
-
-            stage('Deploy war file into tomcat server'){
-                steps{
-                        sh "aws s3 cp s3://aaavelocity-bukt-345-123ssssss/LoginWebApp.war  //mnt/server/apache-tomcat-10.1.53/webapps/ "
-                     }
-           }
         }
-}
 
-            
-            
+        stage('Build WAR') {
+            steps {
+                sh 'mvn clean install'
+            }
+        }
+
+        stage('save Artifacts') {
+            steps {
+                archiveArtifacts artifacts: 'target/*.war', fingerprint: true
+            }
+        }
+
+        stage('Setup DB') {
+            steps {
+                sh '''
+                chmod +x setup-db.sh
+                ./setup-db.sh
+                '''
+            }
+        }
+
+        stage('Deploy to slave') {
+            steps {
+                sh '''
+                scp target/*.war root@172.31.29.47:/mnt/servers/apache-tomcat-10.1.54/webapps                
+ 		  '''
+            }
+        }
+    }
+}
