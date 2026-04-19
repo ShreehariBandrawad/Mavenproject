@@ -9,7 +9,10 @@ pipeline {
                 git 'https://github.com/ShreehariBandrawad/Mavenproject.git'
             }
         }
-
+        tools {
+        maven 'apache-maven-3.9.15'
+    }
+    stages {
         stage('Build WAR') {
             steps {
                 sh 'mvn clean install'
