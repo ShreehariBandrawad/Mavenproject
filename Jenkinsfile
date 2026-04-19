@@ -9,7 +9,7 @@ pipeline {
 
     stages {
 
-        stage('checkout code') {
+        stage('Checkout Code') {
             steps {
                 git 'https://github.com/ShreehariBandrawad/Mavenproject.git'
             }
@@ -21,7 +21,7 @@ pipeline {
             }
         }
 
-        stage('save Artifacts') {
+        stage('Save Artifacts') {
             steps {
                 archiveArtifacts artifacts: 'target/*.war', fingerprint: true
             }
@@ -36,11 +36,10 @@ pipeline {
             }
         }
 
-        stage('Deploy to slave') {
+        stage('Deploy to Server') {
             steps {
                 sh '''
                 scp -o StrictHostKeyChecking=no target/LoginWebApp.war root@18.216.27.237:/mnt/servers/apache-tomcat-10.1.54/webapps
-                scp target/*.war root@18.216.27.237:/mnt/servers/apache-tomcat-10.1.54/webapps
                 '''
             }
         }
