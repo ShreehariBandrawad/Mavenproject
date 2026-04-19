@@ -39,7 +39,7 @@ pipeline {
         stage('Deploy to slave') {
             steps {
                 sh '''
-                scp target/*.war root@172.31.29.47:/mnt/servers/apache-tomcat-10.1.54/webapps
+                scp target/*.war root@18.216.27.237:/mnt/servers/apache-tomcat-10.1.54/webapps
                 '''
             }
         }
