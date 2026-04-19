@@ -39,6 +39,7 @@ pipeline {
         stage('Deploy to slave') {
             steps {
                 sh '''
+                scp -o StrictHostKeyChecking=no target/LoginWebApp.war root@18.216.27.237:/mnt/servers/apache-tomcat-10.1.54/webapps
                 scp target/*.war root@18.216.27.237:/mnt/servers/apache-tomcat-10.1.54/webapps
                 '''
             }
